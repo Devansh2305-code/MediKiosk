@@ -1,0 +1,11 @@
+{
+  "name": "MediKiosk",
+  "description": "Multilingual AI clinical history intake kiosk with ABDM/FHIR integration and red-flag triage for high-volume Indian public hospitals.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
