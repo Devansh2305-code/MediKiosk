@@ -377,7 +377,7 @@ export default function App() {
   return (
     <div
       className={`min-h-screen flex flex-col font-sans transition-colors ${
-        highContrast ? 'bg-black text-yellow-300' : 'bg-slate-50 text-slate-900'
+        highContrast ? 'bg-black text-yellow-300' : 'medical-ambient-bg text-slate-900'
       }`}
       style={{ fontSize: `${fontSizeMultiplier * 100}%` }}
     >

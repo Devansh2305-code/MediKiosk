@@ -46,32 +46,33 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
   }, [slots, documents]);
 
   return (
-    <div id="step-review-recap" className="max-w-4xl mx-auto px-4 py-8">
+    <div id="step-review-recap" className="max-w-5xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-800 mb-3 shadow-sm">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white mb-3 shadow-lg shadow-emerald-500/20 border border-white/40">
           <FileCheck className="w-8 h-8" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2">
+        <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-2 tracking-tight">
           {t.recapTitle}
         </h2>
-        <p className="text-base text-slate-600 font-medium">
+        <p className="text-base text-slate-600 font-medium max-w-xl mx-auto">
           {t.recapSubtitle}
         </p>
       </div>
 
       {/* Audio Listen Aloud Bar */}
-      <div className="bg-sky-50 border border-sky-200 rounded-3xl p-5 mb-8 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-sky-600 text-white flex items-center justify-center shadow">
+      <div className="bg-white/95 backdrop-blur-md border-2 border-sky-200 rounded-3xl p-5 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md shadow-sky-500/5 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky-500 via-teal-500 to-indigo-600" />
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-sky-500/20 shrink-0">
             <Volume2 className="w-6 h-6" />
           </div>
           <div>
-            <h4 className="text-base font-extrabold text-sky-950">
-              {isHindi ? 'पूरा विवरण आवाज में सुनें' : 'Listen to Intake Summary Aloud'}
+            <h4 className="text-base font-black text-slate-900">
+              {isHindi ? 'पूरा विवरण आवाज में सुनें' : 'Listen to Clinical Summary Aloud'}
             </h4>
-            <p className="text-xs text-sky-800 font-medium">
-              {isHindi ? 'डॉक्टर को भेजने से पहले अपनी भाषा में पूरी जानकारी सुनें' : 'Verify all details in plain spoken language'}
+            <p className="text-xs text-slate-600 font-medium">
+              {isHindi ? 'डॉक्टर को भेजने से पहले अपनी भाषा में पूरी जानकारी सुनें' : 'Verify all recorded details before final transmission to OPD'}
             </p>
           </div>
         </div>
@@ -80,7 +81,7 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
           type="button"
           id="btn-speak-recap"
           onClick={onSpeakRecap}
-          className="py-3 px-5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-sm shadow transition-all active:scale-95"
+          className="py-3 px-5 rounded-2xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white font-black text-sm shadow-md shadow-sky-500/20 transition-all active:scale-95 cursor-pointer shrink-0"
         >
           {t.recapListenAudio}
         </button>
@@ -92,27 +93,29 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
           {discrepancies.map((disc) => (
             <div
               key={disc.id}
-              className={`p-5 rounded-2xl border-2 flex items-start gap-3.5 shadow-sm ${
+              className={`p-5 rounded-3xl border-2 flex items-start gap-4 shadow-md ${
                 disc.severity === 'CRITICAL'
-                  ? 'bg-rose-50 border-rose-400 text-rose-950'
-                  : 'bg-amber-50 border-amber-400 text-amber-950'
+                  ? 'bg-rose-50/90 border-rose-400 text-rose-950 ring-2 ring-rose-500/20'
+                  : 'bg-amber-50/90 border-amber-400 text-amber-950 ring-2 ring-amber-500/20'
               }`}
             >
-              <AlertTriangle className={`w-6 h-6 flex-shrink-0 mt-0.5 ${disc.severity === 'CRITICAL' ? 'text-rose-600' : 'text-amber-600'}`} />
-              <div>
-                <div className="flex items-center gap-2">
-                  <h5 className="font-extrabold text-sm md:text-base">{disc.title}</h5>
-                  <span className="text-[10px] px-2 py-0.2 rounded-full font-black uppercase tracking-wider bg-white/70 border border-current">
+              <div className={`p-2.5 rounded-2xl ${disc.severity === 'CRITICAL' ? 'bg-rose-600 text-white' : 'bg-amber-500 text-white'} shrink-0 shadow-xs`}>
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h5 className="font-black text-base">{disc.title}</h5>
+                  <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider ${disc.severity === 'CRITICAL' ? 'bg-rose-200 text-rose-900 border border-rose-300' : 'bg-amber-200 text-amber-900 border border-amber-300'}`}>
                     {disc.severity} Discrepancy
                   </span>
                 </div>
-                <p className="text-xs md:text-sm font-medium mt-1">{disc.description}</p>
-                <div className="mt-2 text-xs flex flex-wrap gap-3 font-semibold">
-                  <span className="bg-white/80 px-2.5 py-1 rounded-md border">
-                    🗣️ Patient oral: {disc.patientStatement}
+                <p className="text-xs md:text-sm font-semibold leading-relaxed">{disc.description}</p>
+                <div className="mt-2 text-xs flex flex-wrap gap-2.5 font-bold">
+                  <span className="bg-white/90 px-3 py-1 rounded-xl border border-slate-200 shadow-xs">
+                    🗣️ Patient oral: <span className="font-black text-slate-900">{disc.patientStatement}</span>
                   </span>
-                  <span className="bg-white/80 px-2.5 py-1 rounded-md border">
-                    📄 Document record: {disc.documentEvidence}
+                  <span className="bg-white/90 px-3 py-1 rounded-xl border border-slate-200 shadow-xs">
+                    📄 Document record: <span className="font-black text-slate-900">{disc.documentEvidence}</span>
                   </span>
                 </div>
               </div>
@@ -124,14 +127,15 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
       {/* Structured Recap Cards with Provenance Chips */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* 1. Chief Complaint & HPI */}
-        <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="p-6 bg-white/95 backdrop-blur-md rounded-3xl border-2 border-slate-200/90 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-red-600" />
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
                 <Heart className="w-4 h-4 text-rose-600" />
                 <span>Presenting Complaint &amp; HPI</span>
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold border border-emerald-200">
+              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-black border border-emerald-300">
                 Patient Stated
               </span>
             </div>
@@ -140,30 +144,36 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
               {summary.chiefComplaint.title}
             </h4>
 
-            <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-200 mb-3">
+            <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-200 mb-3 font-medium">
               {summary.hpi.narrative}
             </p>
 
-            <div className="space-y-1 text-xs text-slate-600 font-medium">
-              {summary.hpi.socrates?.onset && <div>• Onset: <span className="font-bold text-slate-800">{summary.hpi.socrates.onset}</span></div>}
-              {summary.hpi.socrates?.character && <div>• Character: <span className="font-bold text-slate-800">{summary.hpi.socrates.character}</span></div>}
+            <div className="space-y-1.5 text-xs text-slate-600 font-medium">
+              {summary.hpi.socrates?.onset && <div>• Onset: <span className="font-black text-slate-900">{summary.hpi.socrates.onset}</span></div>}
+              {summary.hpi.socrates?.character && <div>• Character: <span className="font-black text-slate-900">{summary.hpi.socrates.character}</span></div>}
               {summary.hpi.socrates?.severity !== undefined && (
-                <div>• Pain Severity: <span className="font-bold text-slate-800">{summary.hpi.socrates.severity}/10 (Wong-Baker scale)</span></div>
+                <div className="flex items-center gap-2">
+                  <span>• Pain Severity:</span>
+                  <span className="px-2 py-0.5 rounded-md bg-rose-100 text-rose-900 font-black text-xs border border-rose-200">
+                    {summary.hpi.socrates.severity}/10 (Wong-Baker scale)
+                  </span>
+                </div>
               )}
             </div>
           </div>
         </div>
 
         {/* 2. Active Medications on Record */}
-        <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div className="p-6 bg-white/95 backdrop-blur-md rounded-3xl border-2 border-slate-200/90 shadow-sm flex flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky-500 to-indigo-600" />
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
                 <Pill className="w-4 h-4 text-sky-600" />
                 <span>Current Medications</span>
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 font-bold border border-sky-200">
-                Document Extracted
+              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-900 font-black border border-sky-300">
+                OCR Extracted
               </span>
             </div>
 
@@ -172,13 +182,13 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
             ) : (
               <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                 {summary.medications.map((med, idx) => (
-                  <div key={idx} className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-                    <div className="font-bold text-slate-900 flex items-center justify-between">
-                      <span>{med.brand}</span>
-                      <span className="text-[10px] text-slate-400 font-mono">{(med as any).sourceDocumentDate || 'Recorded'}</span>
+                  <div key={idx} className="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                    <div className="font-black text-slate-900 flex items-center justify-between">
+                      <span className="text-sm">{med.brand}</span>
+                      <span className="text-[10px] text-slate-500 font-mono bg-white px-2 py-0.5 rounded border">{(med as any).sourceDocumentDate || 'Recorded'}</span>
                     </div>
-                    {med.generic && <div className="text-slate-600 font-medium">{med.generic}</div>}
-                    <div className="text-slate-500 text-[11px]">{med.dose} • {med.frequency}</div>
+                    {med.generic && <div className="text-indigo-700 font-bold mt-0.5">({med.generic})</div>}
+                    <div className="text-slate-500 text-[11px] font-semibold mt-0.5">{med.dose} • {med.frequency}</div>
                   </div>
                 ))}
               </div>
@@ -187,24 +197,25 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
         </div>
 
         {/* 3. Allergies & Past Conditions */}
-        <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+        <div className="p-6 bg-white/95 backdrop-blur-md rounded-3xl border-2 border-slate-200/90 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-600" />
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-black uppercase tracking-wider text-slate-600">
               Allergies &amp; Chronic History
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-200">
+            <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-black border border-amber-300">
               Verified
             </span>
           </div>
 
           <div className="mb-4">
-            <span className="text-xs font-bold text-slate-700 block mb-1">Known Allergies:</span>
+            <span className="text-xs font-black text-slate-700 block mb-1.5">Known Allergies:</span>
             {summary.allergies.length === 0 ? (
               <span className="text-xs text-slate-500 font-semibold">No known allergies reported</span>
             ) : (
               <div className="flex flex-wrap gap-1.5">
                 {summary.allergies.map((all, i) => (
-                  <span key={i} className="px-2.5 py-1 bg-rose-100 text-rose-900 border border-rose-300 rounded-lg text-xs font-black">
+                  <span key={i} className="px-3 py-1 bg-rose-100 text-rose-950 border border-rose-300 rounded-xl text-xs font-black shadow-xs">
                     {all}
                   </span>
                 ))}
@@ -213,10 +224,10 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
           </div>
 
           <div>
-            <span className="text-xs font-bold text-slate-700 block mb-1">Past Medical History:</span>
+            <span className="text-xs font-black text-slate-700 block mb-1.5">Past Medical History:</span>
             <div className="flex flex-wrap gap-1.5">
               {summary.pastMedical.map((pm, i) => (
-                <span key={i} className="px-2.5 py-1 bg-slate-100 text-slate-800 border border-slate-200 rounded-lg text-xs font-semibold">
+                <span key={i} className="px-3 py-1 bg-slate-100 text-slate-800 border border-slate-200 rounded-xl text-xs font-bold">
                   {pm}
                 </span>
               ))}
@@ -225,12 +236,13 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
         </div>
 
         {/* 4. Digitized Reports Summary */}
-        <div className="p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+        <div className="p-6 bg-white/95 backdrop-blur-md rounded-3xl border-2 border-slate-200/90 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-indigo-600" />
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-black uppercase tracking-wider text-slate-600">
               Attached Digital Records
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 font-bold border border-purple-200">
+            <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 font-black border border-purple-300">
               {documents.length} Records
             </span>
           </div>
@@ -240,12 +252,12 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
           ) : (
             <div className="space-y-2">
               {documents.map((doc, i) => (
-                <div key={i} className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs flex items-center justify-between">
+                <div key={i} className="p-3 bg-slate-50 rounded-2xl border border-slate-200 text-xs flex items-center justify-between">
                   <div>
-                    <div className="font-bold text-slate-800 capitalize">{doc.docType.replace('_', ' ')}</div>
-                    <div className="text-slate-500 text-[11px]">{doc.facilityOrDoctor || 'Medical Center'}</div>
+                    <div className="font-black text-slate-800 capitalize text-sm">{doc.docType.replace('_', ' ')}</div>
+                    <div className="text-slate-500 text-[11px] font-medium">{doc.facilityOrDoctor || 'Medical Center'}</div>
                   </div>
-                  <span className="font-mono text-slate-600 text-xs font-bold">{doc.documentDate}</span>
+                  <span className="font-mono text-slate-700 text-xs font-black bg-white px-2 py-0.5 rounded border">{doc.documentDate}</span>
                 </div>
               ))}
             </div>
@@ -259,12 +271,12 @@ export const ReviewStep: React.FC<ReviewStepProps> = ({
           type="button"
           id="btn-submit-to-doctor"
           onClick={onSubmitToDoctor}
-          className="w-full sm:w-auto min-w-[340px] py-4 px-8 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xl shadow-lg transition-all active:scale-[0.99] flex items-center justify-center gap-3 mx-auto"
+          className="w-full sm:w-auto min-w-[360px] py-4 px-8 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 hover:from-emerald-700 hover:to-sky-700 text-white font-black text-xl shadow-xl shadow-emerald-500/25 transition-all active:scale-[0.99] flex items-center justify-center gap-3 mx-auto cursor-pointer"
         >
           <CheckCircle2 className="w-7 h-7" />
           <span>{t.submitToDoctor}</span>
         </button>
-        <p className="text-xs text-slate-500 mt-2 font-medium">
+        <p className="text-xs text-slate-500 mt-2.5 font-semibold">
           ABDM FHIR Bundle will be pushed to Hospital HIS, and Kiosk session memory will be wiped cleanly.
         </p>
       </div>
